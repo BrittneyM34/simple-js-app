@@ -1,8 +1,5 @@
-let favoriteFood = 'pasta';
-document.write(favoriteFood);
-let name = 'John';
-let age = 32;
-let message = `Hello!
-This is a longer message here.
-My name is: ${name},
-and I'm ${age}.`; 
+let pokemonList = [
+    {name: 'Bublasaur', height: '7', type: ['grass' , 'poison']},
+    {name: 'ICharmander', height: '6', type: 'fire'},
+    {name: 'Beedrill' height: '10' type: ['bug', 'poison']}
+];
