@@ -8,7 +8,7 @@ let pokemonRepository = (function () {
     },
     {
         name: 'Charmander', 
-        height: '6', 
+        height: 6, 
         weight: 8.5,
         type: ['fire']
     },
@@ -27,18 +27,34 @@ let pokemonRepository = (function () {
     function getAll() {
         return pokemonList;
     }
+    
+    function addListItem(pokemon) {
+        let pList = document.querySelector('.pokemon-list');
+        let listItem = document.createElement('li');
+        let button = document.createElement('button');
+    
+        button.innerText= pokemon.name;
+        button.classList.add('pokemon-button');
+        button.addEventListener('click', function() {
+            showDetails(pokemon);
+        });
+
+        listItem.appendChild(button);
+        pList.appendChild(listItem);   
+    }
+
+    function showDetails (pokemon) { 
+        console.log(pokemon);
+    }
 
     return {
         add: add,
-        getAll: getAll
+        getAll: getAll,
+        addListItem: addListItem
     };
 
 })();
 
 pokemonRepository.getAll().forEach (function(pokemon) {
-    document.write('<p>' + pokemon.name + ' (Height: ' + pokemon.height + ')');
-    if (pokemon.height > 9) {
-        document.write (' - Wow, that\'s big!');
-    }
-    document.write('</p>')
+    pokemonRepository.addListItem(pokemon);
 });
