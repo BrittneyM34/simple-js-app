@@ -1,25 +1,5 @@
 let pokemonRepository = (function () {
-    let pokemonList = [
-    {
-        name: 'Bulbasaur',
-        height: 7, 
-        weight: 6.9,
-        type: ['grass' , 'poison']
-    },
-    {
-        name: 'Charmander', 
-        height: 6, 
-        weight: 8.5,
-        type: ['fire']
-    },
-    {
-        name: 'Beedrill', 
-        height: 10,
-        weight: 29.5,
-        type: ['bug', 'poison']
-    }
-    ];
-
+    let pokemonList = [];
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
     function add (pokemon) {
@@ -50,7 +30,7 @@ let pokemonRepository = (function () {
     }
 
     function loadList () {
-        return fetch(apiUrl).then(function(response) {
+        return fetch(apiUrl).then(function (response) {
             return response.json();
         }).then(function (json) {
             json.results.forEach(function (item) {
@@ -70,7 +50,7 @@ let pokemonRepository = (function () {
         return fetch(url).then(function (response) {
             return response.json();
         }).then(function (details) {
-            item.imageUrl - details.sprites.front_default;
+            item.imageUrl = details.sprites.front_default;
             item.height = details.height;
             item.types = details.types;
         }).catch(function (e) {
@@ -88,6 +68,7 @@ let pokemonRepository = (function () {
         add: add,
         getAll: getAll,
         addListItem: addListItem,
+        loadList: loadList,
         loadDetails: loadDetails
     };
 })();
