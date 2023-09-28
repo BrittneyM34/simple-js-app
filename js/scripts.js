@@ -15,18 +15,20 @@ let pokemonRepository = (function () {
         let pokemonListItem = document.createElement('li');
         let pokemonButton = document.createElement('button');
 
-        pokemonListItem.appendChild(button);
-        pokemonList.appendChild(pokemonListItem);  
-    
         pokemonButton.innerText= pokemon.name;
         pokemonButton.classList.add('pokemon-button');
         pokemonButton.addEventListener('click', function() {
             showDetails(pokemon);
         });
+
+        pokemonListItem.appendChild(pokemonButton);
+        pokemonList.appendChild(pokemonListItem); 
     }
-    
-    function showDetails (pokemon) { 
-        console.log(pokemon);
+
+    function showDetails(item) {
+        loadDetails(item).then(function () {
+            console.log(item);
+        });
     }
 
     function loadList () {
@@ -42,7 +44,7 @@ let pokemonRepository = (function () {
             });
         }).catch(function (e) {
             console.error(e);
-        })
+        });
     }
 
     function loadDetails (item) {
@@ -58,23 +60,24 @@ let pokemonRepository = (function () {
         }); 
     }
 
-    function showDetails(item) {
-        loadDetails(item).then(function () {
-            console.log(pokemon);
-        });
-    }
-
     return {
         add: add,
         getAll: getAll,
         addListItem: addListItem,
+        showDetails: showDetails,
         loadList: loadList,
         loadDetails: loadDetails
     };
 })();
 
+// pokemonRepository.loadList().then(function() {
+//     pokemonRepository.getAll().forEach (function(pokemon) {
+//         pokemonRepository.addListItem(pokemon);
+//     });
+// });
+
 pokemonRepository.loadList().then(function() {
-pokemonRepository.getAll().forEach (function(pokemon) {
-    pokemonRepository.addListItem(pokemon);
+    pokemonRepository.getAll().forEach(function(p) {
+        pokemonRepository.addListItem(p);
     });
-});
+})
