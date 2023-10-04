@@ -1,6 +1,6 @@
 let pokemonRepository = (function () {
     let pokemonList = [];
-    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=10';
 
     function add (pokemon) {
         pokemonList.push(pokemon);
@@ -27,9 +27,58 @@ let pokemonRepository = (function () {
 
     function showDetails(item) {
         loadDetails(item).then(function () {
-            console.log(item);
+            showModal(item);
         });
     }
+
+    let modalContainer = document.querySelector('#modal-container');
+
+    function showModal(pokemon) {
+        let modal = document.createElement('div');
+        modal.classList.add('modal');
+
+        let closeButton = document.createElement('button');
+        closeButton.classList.add('modal-close');
+        closeButton.innerText = 'Close';
+        closeButton.addEventListener('click', hideModal);
+
+        let titleElement = document.createElement('h1');
+        titleElement.innerText = pokemon.name;
+
+        let contentElement = document.createElement('p');
+        contentElement.innerText = 'Height: ' + pokemon.height;
+
+        let imageElement = document.createElement('img');
+        imageElement.setAttribute('src', pokemon.imageUrl);
+        
+        modal.appendChild(closeButton);
+        modal.appendChild(titleElement);
+        modal.appendChild(contentElement);
+        modal.appendChild(imageElement);
+        modalContainer.appendChild(modal);
+
+        modalContainer.classList.add('is-visible');
+    }
+
+    function hideModal() {
+        modalContainer.classList.remove('is-visible');
+        modalContainer.innerHTML = '';
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && modalContainer.classList.contains('is-visible')) {
+          hideModal();
+        }
+      });
+      
+    modalContainer.addEventListener('click', (e) => {
+        //Since this is also triggered when clicking INSIDE the modal
+        //We only want to close if the user clicks directly on the overlay
+        let target = e.target;
+        if (target === modalContainer) {
+        hideModal();
+        }
+    });
 
     function loadList () {
         return fetch(apiUrl).then(function (response) {
@@ -69,12 +118,6 @@ let pokemonRepository = (function () {
         loadDetails: loadDetails
     };
 })();
-
-// pokemonRepository.loadList().then(function() {
-//     pokemonRepository.getAll().forEach (function(pokemon) {
-//         pokemonRepository.addListItem(pokemon);
-//     });
-// });
 
 pokemonRepository.loadList().then(function() {
     pokemonRepository.getAll().forEach(function(p) {
