@@ -3,7 +3,7 @@ let pokemonRepository = (function () {
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
     // Adds a pokemon to the back of the pokemon list array
-    function add (pokemon) {
+    function add(pokemon) {
         pokemonList.push(pokemon);
     }
 
@@ -11,7 +11,7 @@ let pokemonRepository = (function () {
     function getAll() {
         return pokemonList;
     }
-    
+
     // Adds a pokemon as a list item element to the Document Object Model
     function addListItem(pokemon) {
         let pokemonList = document.querySelector('.pokemon-list');
@@ -19,21 +19,22 @@ let pokemonRepository = (function () {
         let pokemonButton = document.createElement('button');
 
         pokemonListItem.classList.add('list-group-item')
-        pokemonButton.innerText= pokemon.name;
-        
+        pokemonButton.innerText = pokemon.name;
+
+        // Button
         pokemonButton.classList.add('btn');
         pokemonButton.classList.add('btn-primary');
-
         pokemonButton.setAttribute('type', 'button');
         pokemonButton.setAttribute('data-toggle', 'modal');
         pokemonButton.setAttribute('data-target', '#pokemon-modal');
-        
-        pokemonButton.addEventListener('click', function() {
+
+        //listen for clicks on button and call showDetails function for pokemon whose button was clicked
+        pokemonButton.addEventListener('click', function () {
             showDetails(pokemon);
         });
 
         pokemonListItem.appendChild(pokemonButton);
-        pokemonList.appendChild(pokemonListItem); 
+        pokemonList.appendChild(pokemonListItem);
     }
 
     function showDetails(item) {
@@ -46,16 +47,22 @@ let pokemonRepository = (function () {
     function showModal(pokemon) {
         let modalHeader = document.querySelector('.modal-pokemon-name');
         modalHeader.innerText = pokemon.name;
-        
-        let contentElement = document.querySelector('.modal-pokemon-height');
-        contentElement.innerText = 'Height: ' + pokemon.height;
-        
+
+        let pokemonHeight = document.querySelector('.modal-pokemon-height');
+        pokemonHeight.innerText = 'Height: ' + pokemon.height;
+
+        let pokemonWeight = document.querySelector('.modal-pokemon-weight');
+        pokemonWeight.innerText = 'Weight: ' + pokemon.weight;
+
+        let pokemonType = document.querySelector('.modal-pokemon-type');
+        pokemonType.innerText = 'Type: ' + pokemon.type.join(', ');
+
         let imageElement = document.querySelector('.modal-pokemon-img');
         imageElement.setAttribute('src', pokemon.imageUrl);
     }
 
     // Retrieves the list of pokemon from the apiUrl as a JSON, then adds the pokemon to memory
-    function loadList () {
+    function loadList() {
         return fetch(apiUrl).then(function (response) {
             return response.json();
         }).then(function (json) {
@@ -72,17 +79,18 @@ let pokemonRepository = (function () {
     }
 
     // Retrieves the specific details of a pokemon
-    function loadDetails (item) {
+    function loadDetails(item) {
         let url = item.detailsUrl;
         return fetch(url).then(function (response) {
             return response.json();
         }).then(function (details) {
             item.imageUrl = details.sprites.front_default;
             item.height = details.height;
-            item.types = details.types;
+            item.weight = details.weight;
+            item.type = details.type;
         }).catch(function (e) {
             console.error(e);
-        }); 
+        });
     }
 
     // Allows the use of these functions outside of the Pokemon Repository in the JavaScript code
@@ -97,8 +105,8 @@ let pokemonRepository = (function () {
 })();
 
 // Loads the pokemon repository to memory, then adds a list item for each pokemon
-pokemonRepository.loadList().then(function() {
-    pokemonRepository.getAll().forEach(function(p) {
+pokemonRepository.loadList().then(function () {
+    pokemonRepository.getAll().forEach(function (p) {
         pokemonRepository.addListItem(p);
     });
 })

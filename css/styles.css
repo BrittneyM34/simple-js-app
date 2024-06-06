@@ -1,0 +1,36 @@
+.list-group-item {
+    background-color: whitesmoke;
+}
+
+.btn {
+    background-color: darkolivegreen;
+    border: none;
+    border-radius: 2%;
+    width: 200px;
+    height: 60px;
+    font-size: medium;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.modal-content {
+    margin: auto;
+    display: inline-block;
+    box-sizing: border-box;
+    background: whitesmoke;
+    padding: 15px;
+    width: 100%;
+    max-width: 700px;
+    text-align: left;
+}
+
+.modal-close {
+    float: right;
+    border: 0;
+    background: none;
+    color: #777;
+    text-decoration: underline;
+}
+
+.show-details:hover {
+    opacity: 50%;
+  }
